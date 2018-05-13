@@ -8,6 +8,14 @@ MIN_BRIGHT=$(echo "$MAX_BRIGHT * 0.08" | bc)
 BRIGHT=$(cat /sys/class/backlight/intel_backlight/brightness | xargs echo)
 STEP=$(echo "$MAX_BRIGHT * 0.05" | bc)
 
+if [ ! -w "/sys/class/backlight/intel_backlight/brightness" ]
+    then
+    echo "'/sys/class/backlight/intel_backlight/brightness' is not writable!"
+    echo "Please execute 'sudo chmod u+w /sys/class/backlight/intel_backlight/brightness' to set write permission."
+    echo "It is necessary so that this script to be able to work without ask sudo password everytime."
+    exit 1
+fi
+
 
 if [ "$TYPE" = "down" ]
     then
