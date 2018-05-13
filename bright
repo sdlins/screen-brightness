@@ -10,30 +10,30 @@ STEP=$(echo "$MAX_BRIGHT * 0.05" | bc)
 
 
 if [ "$TYPE" = "down" ]
-then
+    then
     NEW_BRIGHT=$(echo "scale=0; ($BRIGHT - $STEP) / 1" | bc)
 elif [ "$TYPE" = "up" ]
-then
+    then
     NEW_BRIGHT=$(echo "scale=0; ($BRIGHT + $STEP) / 1" | bc)
 else
-    echo "Use syntax: bright (up|down)"
+    echo "Usage syntax: bright (up|down)"
     exit 1
 fi
 
 if (( $(echo "$NEW_BRIGHT <= $MIN_BRIGHT" | bc -l) ))
     then
-	echo "Impossível reduzir brilho: nível mínimo já atingido!"
+	echo "Impossible to decrease bright. It is already in the min level."
 	exit 1
 fi
 
 if (( $(echo "$NEW_BRIGHT >= $MAX_BRIGHT" | bc -l) ))
     then
-        echo "Impossível aumentar brilho: nível máximo já atingido!"
-        exit 1
+    echo "Impossible to increase bright. It is already in the max level."
+    exit 1
 fi
 
 PERC_BRIGHT_ORIG=$(echo $(( 100 * $BRIGHT / $MAX_BRIGHT )) )
 PERC_BRIGHT=$(echo $(( 100 * $NEW_BRIGHT / $MAX_BRIGHT )) )
 
 echo "$NEW_BRIGHT" | tee /sys/class/backlight/intel_backlight/brightness
-echo "Brilho alterado de $PERC_BRIGHT_ORIG% para $PERC_BRIGHT%."
+echo "Bright changed from $PERC_BRIGHT_ORIG% to $PERC_BRIGHT%."
