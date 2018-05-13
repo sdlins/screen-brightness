@@ -12,7 +12,7 @@ if [ ! -w "/sys/class/backlight/intel_backlight/brightness" ]
     then
     echo "'/sys/class/backlight/intel_backlight/brightness' is not writable!"
     echo "Please execute 'sudo chmod 0646 /sys/class/backlight/intel_backlight/brightness'"
-    echo "so that you can use this script without super user privileges"
+    echo "so that you can use this script without super user privileges."
     exit 1
 fi
 
