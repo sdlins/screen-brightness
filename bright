@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+TYPE=$1
+
+MAX_BRIGHT=$(cat /sys/class/backlight/intel_backlight/max_brightness | xargs echo)
+MIN_BRIGHT=$(echo "$MAX_BRIGHT * 0.08" | bc)
+
+BRIGHT=$(cat /sys/class/backlight/intel_backlight/brightness | xargs echo)
+STEP=$(echo "$MAX_BRIGHT * 0.05" | bc)
+
+
+if [ "$TYPE" = "down" ]
+then
+    NEW_BRIGHT=$(echo "scale=0; ($BRIGHT - $STEP) / 1" | bc)
+elif [ "$TYPE" = "up" ]
+then
+    NEW_BRIGHT=$(echo "scale=0; ($BRIGHT + $STEP) / 1" | bc)
+else
+    echo "Use syntax: bright (up|down)"
+    exit 1
+fi
+
+if (( $(echo "$NEW_BRIGHT <= $MIN_BRIGHT" | bc -l) ))
+    then
+	echo "Impossível reduzir brilho: nível mínimo já atingido!"
+	exit 1
+fi
+
+if (( $(echo "$NEW_BRIGHT >= $MAX_BRIGHT" | bc -l) ))
+    then
+        echo "Impossível aumentar brilho: nível máximo já atingido!"
+        exit 1
+fi
+
+PERC_BRIGHT_ORIG=$(echo $(( 100 * $BRIGHT / $MAX_BRIGHT )) )
+PERC_BRIGHT=$(echo $(( 100 * $NEW_BRIGHT / $MAX_BRIGHT )) )
+
+echo "$NEW_BRIGHT" | tee /sys/class/backlight/intel_backlight/brightness
+echo "Brilho alterado de $PERC_BRIGHT_ORIG% para $PERC_BRIGHT%."
