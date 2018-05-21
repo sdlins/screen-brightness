@@ -8,7 +8,7 @@ Increases or decreases the screen brightness
 3. Move `bright` to your path: `sudo mv path/to/bright /usr/local/bin`
 
 **IMPORTANT!**
-You must execute `sudo chmod 0646 /sys/class/backlight/intel_backlight/brightness` so that you can use this script without super user privileges.
+You must execute `sudo chmod o+w /sys/class/backlight/intel_backlight/brightness` so that you can use this script without super user privileges.
 
 
 ## How to use
