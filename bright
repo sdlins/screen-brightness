@@ -28,13 +28,13 @@ else
     exit 1
 fi
 
-if (( $(echo "$NEW_BRIGHT <= $MIN_BRIGHT" | bc -l) ))
+if (( $(echo "$NEW_BRIGHT <= $MIN_BRIGHT" | bc -l) )) && [ "$TYPE" != "up" ]
     then
 	echo "Impossible to decrease bright. It is already in the min level."
 	exit 1
 fi
 
-if (( $(echo "$NEW_BRIGHT >= $MAX_BRIGHT" | bc -l) ))
+if (( $(echo "$NEW_BRIGHT >= $MAX_BRIGHT" | bc -l) )) && [ "$TYPE" != "down" ]
     then
     echo "Impossible to increase bright. It is already in the max level."
     exit 1
